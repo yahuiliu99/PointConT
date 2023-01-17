@@ -1,0 +1,14 @@
+# @package _global_
+
+model_name: 'PointConT'
+dataset: 'ModelNet40'   
+dataset_dir: 'data/'
+log_dir: 'runs/'
+cfg_path: 'wandb/'
+wandb_name: 'baseline'
+seed: 9344
+batch_size: 32  
+test_batch_size: 16  
+epochs: 300   
+num_classes: 40  
+

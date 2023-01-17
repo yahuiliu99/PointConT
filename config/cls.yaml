@@ -1,0 +1,48 @@
+defaults:
+  - _self_
+  - db: modelnet40
+
+
+eval: False
+flops_profiler: True
+
+use_sgd: True
+lr: 1e-3
+momentum: 0.9
+dropout: 0.5
+scheduler: 'cos'
+warm_up: True
+gpu: 0      # index, not num
+num_points: 1024
+down_ratio: [2, 4, 8, 16, 32]
+patch_size: [16, 16, 16, 16, 16]
+local_size: [16, 16, 16, 16, 16] 
+patch_dim: [3, 64, 128, 256, 512, 1024]
+gmp_dim: 64
+
+input_dim: 3
+transformer_dim: 256
+num_heads: 4
+hidden_dim: 512
+emb_dims: 1024
+
+
+# RSMix arguments
+rsmix_prob: 0.5 
+beta: 1.0 
+rsmix_nsample: 512
+
+
+# We support wandb for online results collection, please check their documentation for details: https://docs.wandb.ai/
+wandb:
+  use_wandb: False
+  project: ${model_name}-${dataset}   
+  name: ${wandb_name}
+
+
+hydra:
+  run:
+    dir: checkpoints/${dataset}/${model_name}/${wandb_name}  # cls or OBJ_cls
+
+  sweep:
+    dir: checkpoints/${dataset}/${model_name}/${wandb_name}

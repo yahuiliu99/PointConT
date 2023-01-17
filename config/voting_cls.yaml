@@ -1,0 +1,32 @@
+model_name: 'PointConT'
+dataset: 'ScanObjectNN'  
+dataset_dir: 'data/'
+seed: 9344
+test_batch_size: 32   
+gpu: 0
+num_repeat: 200
+num_vote: 10
+trans_open: True
+num_points: 1024
+num_classes: 15   
+input_dim: 3
+
+down_ratio: [2, 4, 8, 16, 32]
+patch_size: [16, 16, 16, 16, 16]
+local_size: [16, 16, 16, 16, 16] 
+patch_dim: [3, 64, 128, 256, 512, 1024]
+gmp_dim: 64
+num_heads: 4
+dropout: 0.5
+
+# RSMix arguments
+rsmix_prob: 0.5 
+beta: 1.0 
+rsmix_nsample: 512
+
+hydra:
+  run:
+    dir: checkpoints/${dataset}/${model_name}/voting_cls
+
+  sweep:
+    dir: checkpoints/${dataset}/${model_name}/voting_cls

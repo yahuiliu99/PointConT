@@ -1,0 +1,14 @@
+# @package _global_
+
+model_name: 'PointConT'
+dataset: 'ScanObjectNN'
+dataset_dir: 'data/'
+log_dir: 'runs/'
+cfg_path: 'wandb/'
+wandb_name: 'baseline'
+seed: 9344
+batch_size: 64  
+test_batch_size: 32  
+epochs: 400  
+num_classes: 15   
+
