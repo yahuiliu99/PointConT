@@ -42,7 +42,7 @@ wandb:
 
 hydra:
   run:
-    dir: checkpoints/${dataset}/${model_name}/${wandb_name}  # cls or OBJ_cls
+    dir: checkpoints/${dataset}/${model_name}/${wandb_name}  
 
   sweep:
     dir: checkpoints/${dataset}/${model_name}/${wandb_name}

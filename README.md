@@ -12,8 +12,6 @@ This repository is an official implementation of the following paper:
 >
 >**Accepted for publication in the *IEEE/CAA Journal of Automatica Sinica***
 
-<img src="img/comparison.jpg" alt="conv" style="zoom: 40%;" />
-
 
 ## Get Started
 ### Installation
@@ -94,9 +92,9 @@ Please refer to the following github repository for point cloud rendering code: 
 
 | Dataset |    mAcc  |   OA   |   Download |      
 | ------- | ---- | ---- | :----: | 
-| ModelNet40   |   90.5   |   93.5   |   [ckpt]() \| [log]()   |      
-| ScanObjectNN    |   86.0   |   88.0   |   [ckpt]() \| [log]()   |   
-| ScanObjectNN *   |   88.5   |   90.3   |   [config](config/voting_cls.yaml) \| [log]()   |      
+| ModelNet40   |   90.5   |   93.5   |   [ckpt](https://drive.google.com/file/d/1ZUrZMnqsnr2Tkqt51Aa9LPmsfQ0P3dmI/view?usp=sharing) \| [log](https://drive.google.com/file/d/14v4mmwN7qXnufIML-_1XmWU14U4eej2w/view?usp=share_link)   |      
+| ScanObjectNN    |   86.0   |   88.0   |   [ckpt](https://drive.google.com/file/d/1hewKbJoERzaqY261_QQoenZ0Ni9-iYGF/view?usp=sharing) \| [log](https://drive.google.com/file/d/1s-z5quorbZUYHfTNWnevS-CA_jcy9S0F/view?usp=sharing)   |   
+| ScanObjectNN *   |   88.5   |   90.3   |   [config](config/voting_cls.yaml) \| [log](https://drive.google.com/file/d/1XHQjuHzMBOciWhY7WlM6DsiaiZydrSVR/view?usp=sharing)   |      
 
 \* denotes method evaluated with voting strategy 
 ## Citation
