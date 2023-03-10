@@ -44,39 +44,6 @@ def download_scanobjectnn():
         os.system('rm %s' % (zipfile))
 
 
-def download_shapenetpart():
-    if not os.path.exists(DATA_DIR):
-        os.mkdir(DATA_DIR)
-    if not os.path.exists(os.path.join(DATA_DIR, 'shapenet_part_seg_hdf5_data')):
-        os.mkdir(os.path.join(DATA_DIR, 'shapenet_part_seg_hdf5_data'))
-        www = 'https://shapenet.cs.stanford.edu/media/shapenet_part_seg_hdf5_data.zip'
-        zipfile = os.path.basename(www)
-        os.system('wget %s --no-check-certificate; unzip %s' % (www, zipfile))
-        os.system('mv %s %s' % (zipfile[:-4], os.path.join(DATA_DIR, 'shapenet_part_seg_hdf5_data')))
-        os.system('rm %s' % (zipfile))
-
-
-def download_S3DIS():
-    if not os.path.exists(DATA_DIR):
-        os.mkdir(DATA_DIR)
-    if not os.path.exists(os.path.join(DATA_DIR, 'indoor3d_sem_seg_hdf5_data')):
-        www = 'https://shapenet.cs.stanford.edu/media/indoor3d_sem_seg_hdf5_data.zip'
-        zipfile = os.path.basename(www)
-        os.system('wget %s --no-check-certificate; unzip %s' % (www, zipfile))
-        os.system('mv %s %s' % ('indoor3d_sem_seg_hdf5_data', DATA_DIR))
-        os.system('rm %s' % (zipfile))
-    if not os.path.exists(os.path.join(DATA_DIR, 'Stanford3dDataset_v1.2_Aligned_Version')):
-        if not os.path.exists(os.path.join(DATA_DIR, 'Stanford3dDataset_v1.2_Aligned_Version.zip')):
-            print('Please download Stanford3dDataset_v1.2_Aligned_Version.zip \
-                from https://goo.gl/forms/4SoGp4KtH1jfRqEj2 and place it under data/')
-            sys.exit(0)
-        else:
-            zippath = os.path.join(DATA_DIR, 'Stanford3dDataset_v1.2_Aligned_Version.zip')
-            os.system('unzip %s' % (zippath))
-            os.system('mv %s %s' % ('Stanford3dDataset_v1.2_Aligned_Version', DATA_DIR))
-            os.system('rm %s' % (zippath))
-
-
 def load_modelnet40(data_dir, partition):
     # download_modelnet40()
     all_data = []
@@ -103,73 +70,6 @@ def load_scanobjectnn(data_dir, partition):
     f.close()
 
     return all_data, all_label
-
-
-def load_shapenetpart(data_dir, partition):
-    # download_shapenetpart()
-    all_data = []
-    all_label = []
-    all_seg = []
-    if partition == 'trainval':
-        file = glob.glob(os.path.join(data_dir, 'shapenet_part_seg_hdf5_data', '*train*.h5')) \
-               + glob.glob(os.path.join(data_dir, 'shapenet_part_seg_hdf5_data', '*val*.h5'))
-    else:
-        file = glob.glob(os.path.join(data_dir, 'shapenet_part_seg_hdf5_data', '*%s*.h5'%partition))
-    for h5_name in file:
-        f = h5py.File(h5_name, 'r+')
-        data = f['data'][:].astype('float32')
-        label = f['label'][:].astype('int64')
-        seg = f['pid'][:].astype('int64')
-        f.close()
-        all_data.append(data)
-        all_label.append(label)
-        all_seg.append(seg)
-    all_data = np.concatenate(all_data, axis=0)
-    all_label = np.concatenate(all_label, axis=0)
-    all_seg = np.concatenate(all_seg, axis=0)
-    return all_data, all_label, all_seg
-
-
-def load_S3DIS(data_dir, partition, test_area):
-    # download_S3DIS()
-
-    # prepare_test_data_semseg
-    if not os.path.exists(os.path.join(data_dir, 'stanford_indoor3d')):
-        os.system('python prepare_data/collect_indoor3d_data.py')
-    if not os.path.exists(os.path.join(data_dir, 'indoor3d_sem_seg_hdf5_data_test')):
-        os.system('python prepare_data/gen_indoor3d_h5.py')
-
-    if partition == 'train':
-        sub_data_dir = os.path.join(data_dir, 'indoor3d_sem_seg_hdf5_data')
-    else:
-        sub_data_dir = os.path.join(data_dir, 'indoor3d_sem_seg_hdf5_data_test')
-    with open(os.path.join(sub_data_dir, "all_files.txt")) as f:
-        all_files = [line.rstrip() for line in f]
-    with open(os.path.join(sub_data_dir, "room_filelist.txt")) as f:
-        room_filelist = [line.rstrip() for line in f]
-    data_batchlist, label_batchlist = [], []
-    for f in all_files:
-        file = h5py.File(os.path.join(data_dir, f), 'r+')
-        data = file["data"][:]
-        label = file["label"][:]
-        data_batchlist.append(data)
-        label_batchlist.append(label)
-    data_batches = np.concatenate(data_batchlist, 0)
-    seg_batches = np.concatenate(label_batchlist, 0)
-    test_area_name = "Area_" + test_area
-    train_idxs, test_idxs = [], []
-    for i, room_name in enumerate(room_filelist):
-        if test_area_name in room_name:
-            test_idxs.append(i)
-        else:
-            train_idxs.append(i)
-    if partition == 'train':
-        all_data = data_batches[train_idxs, ...]
-        all_seg = seg_batches[train_idxs, ...]
-    else:
-        all_data = data_batches[test_idxs, ...]
-        all_seg = seg_batches[test_idxs, ...]
-    return all_data, all_seg
 
 
 def normalize_pointcloud(pointcloud):
@@ -253,69 +153,6 @@ class ScanObjectNN(Dataset):
     def __len__(self):
         return self.data.shape[0]
         
-
-class ShapeNetPart(Dataset):
-    def __init__(self, data_dir=DATA_DIR, num_points=2048, partition='trainal', class_choice=None):
-        self.data, self.label, self.seg = load_shapenetpart(data_dir, partition)
-        self.cat2id = {'airplane': 0, 'bag': 1, 'cap': 2, 'car': 3, 'chair': 4, 
-                       'earphone': 5, 'guitar': 6, 'knife': 7, 'lamp': 8, 'laptop': 9, 
-                       'motor': 10, 'mug': 11, 'pistol': 12, 'rocket': 13, 'skateboard': 14, 'table': 15}
-        self.seg_num = [4, 2, 2, 4, 4, 3, 3, 2, 4, 2, 6, 2, 3, 3, 3, 3]
-        self.index_start = [0, 4, 6, 8, 12, 16, 19, 22, 24, 28, 30, 36, 38, 41, 44, 47]
-        self.num_points = num_points
-        self.partition = partition        
-        self.class_choice = class_choice
-
-        if self.class_choice != None:
-            id_choice = self.cat2id[self.class_choice]
-            indices = (self.label == id_choice).squeeze()
-            self.data = self.data[indices]
-            self.label = self.label[indices]
-            self.seg = self.seg[indices]
-            self.seg_num_all = self.seg_num[id_choice]
-            self.seg_start_index = self.index_start[id_choice]
-        else:
-            self.seg_num_all = 50
-            self.seg_start_index = 0
-
-    def __getitem__(self, item):
-        pointcloud = self.data[item][:self.num_points]
-        label = self.label[item]
-        seg = self.seg[item][:self.num_points]
-        if self.partition == 'trainval':
-            pointcloud = translate_pointcloud(pointcloud)
-            # pointcloud = rotate_pointcloud(pointcloud)
-            indices = list(range(pointcloud.shape[0]))
-            np.random.shuffle(indices)
-            pointcloud = pointcloud[indices]
-            seg = seg[indices]
-        return pointcloud, label, seg
-
-    def __len__(self):
-        return self.data.shape[0]
-
-
-class S3DIS(Dataset):
-    def __init__(self, data_dir=DATA_DIR, num_points=4096, partition='train', test_area='1'):
-        self.data, self.seg = load_S3DIS(data_dir, partition, test_area)
-        self.num_points = num_points
-        self.partition = partition    
-        # self.semseg_colors = load_color_semseg()
-
-    def __getitem__(self, item):
-        pointcloud = self.data[item][:self.num_points]
-        seg = self.seg[item][:self.num_points]
-        if self.partition == 'train':
-            indices = list(range(pointcloud.shape[0]))
-            np.random.shuffle(indices)
-            pointcloud = pointcloud[indices]
-            seg = seg[indices]
-        seg = torch.LongTensor(seg)
-        return pointcloud, seg
-
-    def __len__(self):
-        return self.data.shape[0]
-
 
 # if __name__ == '__main__':
     # test = ModelNet40(partition='test')

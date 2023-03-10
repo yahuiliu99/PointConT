@@ -6,11 +6,13 @@
 -->
 # PointConT
 This repository is an official implementation of the following paper:
-> [Point Cloud Classification Using Content-based Transformer via Clustering in Feature Space]()
+> [Point Cloud Classification Using Content-based Transformer via Clustering in Feature Space](https://arxiv.org/pdf/2303.04599v1.pdf)
 >
+>Yahui Liu, Bin Tian, Yisheng Lv, Lingxi Li, Feiyue Wang
+>
+>**Accepted for publication in the *IEEE/CAA Journal of Automatica Sinica***
 
-Note: paper is accepted to *IEEE/CAA Journal of Automatica Sinica* and will be released soon.
-
+<img src="img/comparison.jpg" alt="conv" style="zoom: 40%;" />
 
 
 ## Get Started
@@ -86,6 +88,7 @@ python main_cls.py db=${dataset} eval=True
 
 Please refer to the following github repository for point cloud rendering code: [PointFlowRenderer](https://github.com/zekunhao1995/PointFlowRenderer)
 
+![img](img/visual.jpg)
 
 ## Results (pretrained model)
 
@@ -116,8 +119,8 @@ If you find our work useful in your research, please consider citing:
 Our code is mainly based on the following open-source projects. Many thanks to the authors for their wonderful works.
 
 
-[PointNet2](https://github.com/erikwijmans/Pointnet2_PyTorch), [PointNeXt](https://github.com/guochengqian/pointnext), [Point-Transformers](https://github.com/qq456cvb/Point-Transformers), [dgcnn](https://github.com/AnTao97/dgcnn.pytorch), 
+[PointNet2](https://github.com/erikwijmans/Pointnet2_PyTorch),  [Point-Transformers](https://github.com/qq456cvb/Point-Transformers), [DGCNN](https://github.com/AnTao97/dgcnn.pytorch), 
 [CurveNet](https://github.com/tiangexiang/CurveNet), 
-[PointMLP](https://github.com/ma-xu/pointMLP-pytorch), [PAConv](https://github.com/CVMI-Lab/PAConv), [PointFlowRenderer](https://github.com/zekunhao1995/PointFlowRenderer)
+[PointMLP](https://github.com/ma-xu/pointMLP-pytorch), [PAConv](https://github.com/CVMI-Lab/PAConv), [PointNeXt](https://github.com/guochengqian/pointnext)
 
 

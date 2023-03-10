@@ -5,9 +5,6 @@ LastEditTime: 2022-05-18 12:24:51
 '''
 # Reference: https://github.com/tiangexiang/CurveNet
 
-
-import numpy as np
-from collections import Counter
 import torch
 import torch.nn.functional as F
 
@@ -37,43 +34,6 @@ def cal_loss(pred, gold, smoothing=True):
 
     return loss
 
-
-
-def critical_feature_sample(feature, npoint):
-    device = feature.device
-    B, S, D = feature.shape 
-    centroids = torch.zeros(B, npoint, dtype=torch.long).to(device)
-    
-    for i in range(B):
-        fp_per = feature[i, :, :].detach().cpu().numpy()   # [S, D]
-        drop_idx = np.arange(S)  # [S]
-        k = npoint
-        sample_idx = []
-        while True:
-            idx = fp_per.argmax(0)  # [D]
-            idx = drop_idx[idx]
-            uidx = np.unique(idx)
-            len_uidx = len(uidx)  
-            if  len_uidx > k:
-                values, _ = zip(*Counter(idx).most_common(k))
-                sample_idx.extend(list(values))
-                break
-
-            elif len_uidx < k:
-                sample_idx.extend(list(uidx))
-                l = fp_per.shape[0]
-                all_idx = np.arange(l)
-                drop_idx = np.array(list(set(all_idx) - set(uidx)))
-                fp_per = fp_per[drop_idx, :]
-                k = k - len_uidx
-
-            else:
-                sample_idx.extend(list(uidx))
-                break
-
-        centroids[i, :] = torch.Tensor(sample_idx)
-
-    return centroids
         
 
 def profile_model(model, args):
