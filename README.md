@@ -6,6 +6,7 @@
 -->
 # PointConT
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/point-cloud-classification-using-content/3d-point-cloud-classification-on-scanobjectnn)](https://paperswithcode.com/sota/3d-point-cloud-classification-on-scanobjectnn?p=point-cloud-classification-using-content)
+
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/point-cloud-classification-using-content/3d-point-cloud-classification-on-modelnet40)](https://paperswithcode.com/sota/3d-point-cloud-classification-on-modelnet40?p=point-cloud-classification-using-content)
 
 This repository is an official implementation of the following paper:
