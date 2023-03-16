@@ -6,25 +6,20 @@ defaults:
 eval: False
 flops_profiler: True
 
+gpu: 0      # index, not num
 use_sgd: True
 lr: 1e-3
 momentum: 0.9
 dropout: 0.5
 scheduler: 'cos'
 warm_up: True
-gpu: 0      # index, not num
+
 num_points: 1024
+num_heads: 4
 down_ratio: [2, 4, 8, 16, 32]
 patch_size: [16, 16, 16, 16, 16]
 local_size: [16, 16, 16, 16, 16] 
 patch_dim: [3, 64, 128, 256, 512, 1024]
-gmp_dim: 64
-
-input_dim: 3
-transformer_dim: 256
-num_heads: 4
-hidden_dim: 512
-emb_dims: 1024
 
 
 # RSMix arguments
