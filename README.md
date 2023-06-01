@@ -28,10 +28,10 @@ cd PointConT
 conda create -n pointcont -y python=3.7 numpy=1.20 numba
 conda activate pointcont
 
-# install PyTorch and libs 
+# install PyTorch and libs (refer to requirements.txt)
 # please install compatible PyTorch and CUDA versions
 conda install -y pytorch=1.10.1 torchvision cudatoolkit=11.1 -c pytorch -c nvidia
-pip install glob, h5py, sklearn, einops, hydra-core=1.1, tqdm, warmup-scheduler, deepspeed
+pip install hydra-core==1.1 h5py scikit-learn einops tqdm warmup-scheduler deepspeed tensorboard  
 
 # install the pointnet++ library cuda extensions
 pip install pointnet2_ops_lib/.
@@ -106,13 +106,14 @@ Please refer to the following github repository for point cloud rendering code: 
 If you find our work useful in your research, please consider citing:
 ```
 @article{Liu2023PointConT,
-    author = {Liu, Yahui and Tian, Bin and Lv, Yisheng and Li, Lingxi and Wang, Feiyue},
+    author = {Liu, Yahui and Tian, Bin and Lv, Yisheng and Li, Lingxi and Wang, Fei-Yue},
     title = {Point Cloud Classification Using Content-based Transformer via Clustering in Feature Space},
     journal = {IEEE/CAA Journal of Automatica Sinica}, 
     year={2023},
-    volume={},
-    number={},
-    pages={}
+    volume={10},
+    number={8},
+    pages={1-9},
+    doi={10.1109/JAS.2023.123432}
 }
 ```
 

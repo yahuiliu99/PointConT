@@ -16,5 +16,4 @@ __pycache__/
 /visual.ipynb
 /config/PartSeg.yaml
 /config/SemSeg.yaml
-/requirements.txt
 /models/other_models/
